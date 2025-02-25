@@ -12,6 +12,14 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+SECRET_KEY = os.getenv('SECRET_KEY')
+DEBUG = os.getenv('DEBUG') == 'True'
+# DATABASE_URL = os.getenv('DATABASE_URL')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +29,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_eaf#sc7@+h0uj2m0n@ut(-*wfj4y#&%g-5c0b&p8n1p)c1&)9'
+# SECRET_KEY = 'django-insecure-_eaf#sc7@+h0uj2m0n@ut(-*wfj4y#&%g-5c0b&p8n1p)c1&)9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -81,11 +89,11 @@ WSGI_APPLICATION = 'keep_notes.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'keep_notes',
-        'USER': 'sheharyar',
-        'PASSWORD': 'abcd1437',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DATABASE_HOST'),
+        'PORT': os.getenv('DATABASE_PORT'),
     }
 }
 
@@ -143,6 +151,7 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
+    'SIGNING_KEY': os.getenv('JWT_SECRET_KEY'),
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # Token expiry time
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),   # Refresh token expiry time
     'ROTATE_REFRESH_TOKENS': True,
